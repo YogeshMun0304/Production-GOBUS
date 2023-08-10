@@ -70,7 +70,12 @@ router.get("/get-all-buses", authMiddleware, async (req, res) => {
 
 router.post("/get-all-buses", authMiddleware, async (req, res) => {
   try {
-    const buses = await Bus.find({from: req.body.from});
+    const buses = await Bus.find({
+      $or: [
+        { from: req.body.from },
+        { to: req.body.to }
+      ]
+    }); 
     // const buses=await Bus.find(req.body);
     return res.status(200).send({
       success: true,
